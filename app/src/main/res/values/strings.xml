@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">PositionTracker</string>
+    <string name="title_home">MAP</string>
+    <string name="title_dashboard">STATS</string>
+    <string name="title_notifications">SETTINGS</string>
+    <string name="settings_tracking_heading">Tracking Settings</string>
+    <string name="settings_testcon">Test Connection</string>
+    <string name="settings_save">Save</string>
+    <string name="settings_start_tracking">Start tracking automatically</string>
+    <string name="settings_permission">Check Permission</string>
+</resources>

@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.settings.SettingsFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/padding"
+            android:paddingRight="@dimen/padding">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Serversettings"
+                android:paddingBottom="@dimen/padding"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Hostname"
+                android:paddingBottom="@dimen/padding">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txtHostName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textFieldPort"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Port"
+                android:paddingBottom="@dimen/padding">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtPort"
+                    android:inputType="number"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textFieldAPI"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="API KEY"
+                android:paddingBottom="@dimen/padding">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtApiKey"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnConTest"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_testcon" />
+                <Button
+                    android:id="@+id/btnSave"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_save" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/padding"
+                android:text="@string/settings_tracking_heading"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
+            <Switch
+                android:id="@+id/swAutoRun"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_start_tracking"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/padding"
+                android:text="Distance between Points"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
+            <RadioGroup
+                android:id="@+id/radioGroupDistance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layoutMode="clipBounds"
+                android:nestedScrollingEnabled="true"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radioDistance0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0m" />
+
+                <RadioButton
+                    android:id="@+id/radioDistance10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="10m" />
+
+                <RadioButton
+                    android:id="@+id/radioDistance50"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="50m" /> <!-- Standardmäßig ausgewählt -->
+
+                <RadioButton
+                    android:id="@+id/radioDistance100"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="100m" />
+
+                <RadioButton
+                    android:id="@+id/radioDistance200"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="200m" />
+
+            </RadioGroup>
+
+            <Button
+                android:id="@+id/btnPermission"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_permission" />
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
