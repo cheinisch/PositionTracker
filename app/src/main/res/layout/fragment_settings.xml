@@ -152,6 +152,26 @@
 
             </RadioGroup>
 
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_accuracy" />
+
+            <com.google.android.material.slider.Slider
+                android:id="@+id/sliderAccurancay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:stepSize="1"
+                android:valueFrom="1"
+                android:valueTo="3" />
+
+            <TextView
+                android:id="@+id/tvSettingsAccurancay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+
             <Button
                 android:id="@+id/btnPermission"
                 android:layout_width="match_parent"

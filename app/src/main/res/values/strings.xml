@@ -8,4 +8,8 @@
     <string name="settings_save">Save</string>
     <string name="settings_start_tracking">Start tracking automatically</string>
     <string name="settings_permission">Check Permission</string>
+    <string name="settings_accuracy">Accuracy</string>
+    <string name="settings_accuracy_1">only Wifi</string>
+    <string name="settings_accuracy_2">Mobil / Wifi</string>
+    <string name="settings_accuracy_3">GPS</string>
 </resources>

@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,10 +20,12 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.material.slider.Slider;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Objects;
 
+import de.heimfisch.positiontracker.R;
 import de.heimfisch.positiontracker.SettingsManager;
 import de.heimfisch.positiontracker.TestConnection;
 import de.heimfisch.positiontracker.databinding.FragmentSettingsBinding;
@@ -61,12 +64,16 @@ public class SettingsFragment extends Fragment {
         TextInputEditText txtPort = binding.txtPort;
         TextInputEditText txtApiKey = binding.txtApiKey;
 
+        TextView tvAccurancay = binding.tvSettingsAccurancay;
+
         RadioGroup rgDistance = binding.radioGroupDistance;
         RadioButton rgDistance0 = binding.radioDistance0;
         RadioButton rgDistance10 = binding.radioDistance10;
         RadioButton rgDistance50 = binding.radioDistance50;
         RadioButton rgDistance100 = binding.radioDistance100;
         RadioButton rgDistance200 = binding.radioDistance200;
+
+        Slider slideAccurancay = binding.sliderAccurancay;
 
 
         // Read Settings
@@ -138,11 +145,26 @@ public class SettingsFragment extends Fragment {
         });
 
         swAutorun.setOnClickListener(v -> {
-            settingsManager.setBackgroundServiceEnabled(swAutorun.isEnabled());
+            settingsManager.setBackgroundServiceEnabled(swAutorun.isChecked());
             Log.d(TAG,"Autorun is changed");
             enableDisableButtons();
         });
 
+        slideAccurancay.addOnChangeListener(new Slider.OnChangeListener() {
+            @Override
+            public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
+                int i = (int) slideAccurancay.getValue();
+                if(i == 1)
+                {
+                    tvAccurancay.setText(R.string.settings_accuracy_1);
+                }else if(i == 2)
+                {
+                    tvAccurancay.setText(R.string.settings_accuracy_2);
+                }else{
+                    tvAccurancay.setText(R.string.settings_accuracy_3);
+                }
+            }
+        });
 
 
         return root;
@@ -171,11 +193,16 @@ public class SettingsFragment extends Fragment {
     {
         if(settingsManager.isBackgroundServiceEnabled())
         {
+            Log.d(TAG,"Buttons enabled");
             binding.radioGroupDistance.setEnabled(true);
         }else{
             Log.d(TAG,"Buttons disabled");
             binding.radioGroupDistance.setEnabled(false);
         }
+        for(int i = 0; i < binding.radioGroupDistance.getChildCount(); i++){
+            ((RadioButton)binding.radioGroupDistance.getChildAt(i)).setEnabled(binding.swAutoRun.isChecked());
+        }
+        binding.sliderAccurancay.setEnabled(binding.swAutoRun.isChecked());
     }
 
     private void checkLocationPermission() {
