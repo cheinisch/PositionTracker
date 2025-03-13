@@ -20,6 +20,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.material.slider.LabelFormatter;
 import com.google.android.material.slider.Slider;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -83,6 +84,7 @@ public class SettingsFragment extends Fragment {
         swAutorun.setChecked(settingsManager.isBackgroundServiceEnabled());
 
         loadRadioGroup();
+        loadSlider(slideAccurancay, tvAccurancay);
         enableDisableButtons();
         // Listener
 
@@ -150,24 +152,38 @@ public class SettingsFragment extends Fragment {
             enableDisableButtons();
         });
 
+        slideAccurancay.setLabelBehavior(LabelFormatter.LABEL_GONE);
+
         slideAccurancay.addOnChangeListener(new Slider.OnChangeListener() {
             @Override
             public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
                 int i = (int) slideAccurancay.getValue();
-                if(i == 1)
-                {
-                    tvAccurancay.setText(R.string.settings_accuracy_1);
-                }else if(i == 2)
-                {
-                    tvAccurancay.setText(R.string.settings_accuracy_2);
-                }else{
-                    tvAccurancay.setText(R.string.settings_accuracy_3);
-                }
+                settingsManager.setUpdateAccuracy(String.valueOf(i));
+                setAccuracyValue(i, tvAccurancay);
             }
         });
 
 
         return root;
+    }
+
+    private void loadSlider(Slider slideAccurancay, TextView tvAccurancay) {
+        int value = Integer.parseInt(settingsManager.getUpdateAccuracy());
+
+        slideAccurancay.setValue(value);
+        setAccuracyValue(value, tvAccurancay);
+    }
+
+    private void setAccuracyValue(int i, TextView tvAccuracy) {
+        if(i == 1)
+        {
+            tvAccuracy.setText(R.string.settings_accuracy_1);
+        }else if(i == 2)
+        {
+            tvAccuracy.setText(R.string.settings_accuracy_2);
+        }else{
+            tvAccuracy.setText(R.string.settings_accuracy_3);
+        }
     }
 
     private void loadRadioGroup() {

@@ -13,6 +13,7 @@ public class SettingsManager {
     private static final String KEY_DARWARICH_HOST = "darwarich_host";
     private static final String KEY_DARWARICH_PORT = "darwarich_port";
     private static final String KEY_DARWARICH_API = "darwarich_api";
+    private static final String KEY_ACCURACY = "update_accuracy";
 
     private SharedPreferences sharedPreferences;
 
@@ -97,6 +98,14 @@ public class SettingsManager {
 
     public String getUpdateDistance() {
         return sharedPreferences.getString(KEY_UPDATE_DISTANCE, "0");
+    }
+
+    public void setUpdateAccuracy(String mode) {
+        sharedPreferences.edit().putString(KEY_ACCURACY, mode).apply();
+    }
+
+    public String getUpdateAccuracy() {
+        return sharedPreferences.getString(KEY_ACCURACY, "1");
     }
 
     public void setLastKnownLocation(double latitude, double longitude) {

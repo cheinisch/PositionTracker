@@ -164,13 +164,15 @@
                 android:layout_height="wrap_content"
                 android:stepSize="1"
                 android:valueFrom="1"
-                android:valueTo="3" />
+                android:valueTo="3"/>
 
             <TextView
                 android:id="@+id/tvSettingsAccurancay"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:paddingBottom="@dimen/padding"/>
 
             <Button
                 android:id="@+id/btnPermission"
