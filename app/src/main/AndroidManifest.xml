@@ -29,7 +29,8 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -37,10 +38,9 @@
             </intent-filter>
         </activity>
 
-        <!-- Google Maps API Key -->
         <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBYG51Wp53oqLy_gCxkh49A-w_dVaBKpzI"/>
+            android:name="org.osmdroid.config"
+            android:value="de.heimfisch.positiontracker"/>
     </application>
 
 </manifest>

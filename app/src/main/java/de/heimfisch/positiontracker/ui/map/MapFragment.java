@@ -9,21 +9,21 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.OnMapReadyCallback;
+import org.osmdroid.config.Configuration;
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.util.BoundingBox;
+import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.Marker;
 
 import de.heimfisch.positiontracker.databinding.FragmentMapBinding;
 
-
-public class MapFragment extends Fragment implements OnMapReadyCallback {
-
+public class MapFragment extends Fragment {
 
     private FragmentMapBinding binding;
-
     private MapView mapView;
-    private GoogleMap googleMap;
 
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         MapViewModel homeViewModel =
@@ -32,21 +32,37 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         binding = FragmentMapBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        // Google MapView initialisieren
+        // OSM MapView initialisieren
+        Configuration.getInstance().setUserAgentValue(requireContext().getPackageName());
+
         mapView = binding.mapView;
-        mapView.onCreate(savedInstanceState);
-        mapView.getMapAsync(this); // Callback für Google Maps
+        mapView.setTileSource(TileSourceFactory.MAPNIK); // Standard OpenStreetMap Kacheln
+        mapView.setMultiTouchControls(true);
+        mapView.setMinZoomLevel(4.0);
 
-        //final TextView textView = binding.textHome;
-        //homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        // Setze Standardposition auf Berlin
+        GeoPoint startPoint = new GeoPoint(52.5200, 13.4050);
+        mapView.getController().setZoom(10.0);
+
+        // Begrenzung nur für Höhe (Nord/Süd) setzen, aber Ost/West offen lassen
+        double maxLatitude = 85.0511;  // Maximale nördliche Breite (Oberhalb von Grönland)
+        double minLatitude = -85.0511; // Maximale südliche Breite (Antarktis)
+        double maxLongitude = 180.0;   // Keine Begrenzung für Osten
+        double minLongitude = -180.0;  // Keine Begrenzung für Westen
+
+        BoundingBox boundingBox = new BoundingBox(maxLatitude, maxLongitude, minLatitude, minLongitude);
+        mapView.setScrollableAreaLimitDouble(boundingBox); // Setzt die vertikale Begrenzung
+
+        mapView.getController().setCenter(startPoint);
+
+        // Beispiel-Marker setzen
+        Marker marker = new Marker(mapView);
+        marker.setPosition(startPoint);
+        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+        marker.setTitle("Berlin");
+        mapView.getOverlays().add(marker);
+
         return root;
-    }
-
-
-    @Override
-    public void onMapReady(GoogleMap gMap) {
-        googleMap = gMap;
-
     }
 
     @Override
@@ -64,14 +80,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mapView.onDestroy();
+        mapView.onDetach();
         binding = null;
     }
-
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        mapView.onLowMemory();
-    }
-
 }

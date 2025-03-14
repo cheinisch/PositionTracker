@@ -48,6 +48,8 @@ dependencies {
     implementation ("com.google.android.gms:play-services-location:21.0.1")
     implementation(libs.play.services.maps)
 
+    implementation ("org.osmdroid:osmdroid-android:6.1.16") // OSM
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
