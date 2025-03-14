@@ -100,6 +100,7 @@ public class SettingsFragment extends Fragment {
         enableDisableButtons();
         loadUpdateMode();
         loadMinimumDistance();
+        loadMDistanceTime();
         // Listener
 
         rgDistance.setOnCheckedChangeListener((group, checkedId) -> {
@@ -313,6 +314,11 @@ public class SettingsFragment extends Fragment {
     private void loadMinimumDistance()
     {
         binding.txtMinimumDistance.setText(settingsManager.getMinimumDistance());
+    }
+
+    private void loadMDistanceTime()
+    {
+        binding.txtDistanceTime.setText(settingsManager.getUpdateDistanceTime());
     }
 
     private void checkNotificationPermission() {
