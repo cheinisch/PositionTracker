@@ -102,14 +102,6 @@
                 android:text="@string/settings_start_tracking"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="@dimen/padding"
-                android:text="Distance between Points"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -129,47 +121,87 @@
                     android:text="@string/settings_distance" />
             </LinearLayout>
 
-            <RadioGroup
-                android:id="@+id/radioGroupDistance"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layoutMode="clipBounds"
-                android:nestedScrollingEnabled="true"
-                android:orientation="horizontal">
 
-                <RadioButton
-                    android:id="@+id/radioDistance0"
+            <LinearLayout
+                android:id="@+id/layoutDistance_Meter"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/padding"
+                    android:text="@string/settings_distance_points"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
+                <RadioGroup
+                    android:id="@+id/radioGroupDistance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0m" />
+                    android:layout_gravity="center_horizontal"
+                    android:layoutMode="clipBounds"
+                    android:nestedScrollingEnabled="true"
+                    android:orientation="horizontal">
 
-                <RadioButton
-                    android:id="@+id/radioDistance10"
-                    android:layout_width="wrap_content"
+                    <RadioButton
+                        android:id="@+id/radioDistance0"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0m" />
+
+                    <RadioButton
+                        android:id="@+id/radioDistance10"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="10m" />
+
+                    <RadioButton
+                        android:id="@+id/radioDistance50"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:text="50m" /> <!-- Standardmäßig ausgewählt -->
+
+                    <RadioButton
+                        android:id="@+id/radioDistance100"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="100m" />
+
+                    <RadioButton
+                        android:id="@+id/radioDistance200"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="200m" />
+
+                </RadioGroup>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutDistance_Time"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="@dimen/padding"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvTimeBetween"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="10m" />
+                    android:text="@string/settings_time_between" />
 
-                <RadioButton
-                    android:id="@+id/radioDistance50"
-                    android:layout_width="wrap_content"
+                <com.google.android.material.slider.Slider
+                    android:id="@+id/sliderTimeBetween"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:text="50m" /> <!-- Standardmäßig ausgewählt -->
+                    android:stepSize="1"
+                    android:valueFrom="1"
+                    android:valueTo="1800"/>
+            </LinearLayout>
 
-                <RadioButton
-                    android:id="@+id/radioDistance100"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="100m" />
 
-                <RadioButton
-                    android:id="@+id/radioDistance200"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="200m" />
-
-            </RadioGroup>
 
             <TextView
                 android:id="@+id/textView4"

@@ -14,4 +14,6 @@
     <string name="settings_accuracy_3">GPS</string>
     <string name="settings_distance">Distance</string>
     <string name="settings_time">Time</string>
+    <string name="settings_time_between">Time Between Points</string>
+    <string name="settings_distance_points">Distance between Points in m</string>
 </resources>
