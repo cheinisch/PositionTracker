@@ -12,4 +12,6 @@
     <string name="settings_accuracy_1">only Wifi</string>
     <string name="settings_accuracy_2">Mobil / Wifi</string>
     <string name="settings_accuracy_3">GPS</string>
+    <string name="settings_distance">Distance</string>
+    <string name="settings_time">Time</string>
 </resources>
