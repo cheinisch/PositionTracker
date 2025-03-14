@@ -16,6 +16,6 @@
     <string name="settings_time">Time</string>
     <string name="settings_time_between">Time Between Points</string>
     <string name="settings_distance_points">Distance between Points in m</string>
-    <string name="settings_minimum_distance">Minimum Distance between Points for start</string>
+    <string name="settings_minimum_distance">Minimum Distance (meter) between Points for start</string>
     <string name="settings_minimum_distance_time">Seconds between Points</string>
 </resources>

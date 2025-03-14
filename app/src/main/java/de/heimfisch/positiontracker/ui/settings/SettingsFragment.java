@@ -4,7 +4,9 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.Layout;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -70,6 +72,7 @@ public class SettingsFragment extends Fragment {
         TextInputEditText txtPort = binding.txtPort;
         TextInputEditText txtApiKey = binding.txtApiKey;
         TextInputEditText txtMinimumDistance = binding.txtMinimumDistance;
+        TextInputEditText txtDistanceTime = binding.txtDistanceTime;
 
         TextView tvAccurancay = binding.tvSettingsAccurancay;
 
@@ -96,6 +99,7 @@ public class SettingsFragment extends Fragment {
         loadSlider(slideAccurancay, tvAccurancay);
         enableDisableButtons();
         loadUpdateMode();
+        loadMinimumDistance();
         // Listener
 
         rgDistance.setOnCheckedChangeListener((group, checkedId) -> {
@@ -168,6 +172,40 @@ public class SettingsFragment extends Fragment {
             settingsManager.setBackgroundServiceEnabled(swAutorun.isChecked());
             Log.d(TAG,"Autorun is changed");
             enableDisableButtons();
+        });
+
+        txtDistanceTime.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                settingsManager.setUpdateDistanceTime(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        txtMinimumDistance.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                settingsManager.setMinimumDistance(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
         });
 
         slideAccurancay.setLabelBehavior(LabelFormatter.LABEL_GONE);
@@ -270,6 +308,11 @@ public class SettingsFragment extends Fragment {
         int mode = Integer.parseInt(settingsManager.getUpdateDistanceMode());
 
         selectUpdateMode(mode);
+    }
+
+    private void loadMinimumDistance()
+    {
+        binding.txtMinimumDistance.setText(settingsManager.getMinimumDistance());
     }
 
     private void checkNotificationPermission() {
