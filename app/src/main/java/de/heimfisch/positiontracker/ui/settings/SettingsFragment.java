@@ -4,11 +4,13 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
@@ -23,6 +25,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.slider.LabelFormatter;
 import com.google.android.material.slider.Slider;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Objects;
 
@@ -44,8 +47,8 @@ public class SettingsFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        SettingsViewModel settingsViewModel =
-                new ViewModelProvider(this).get(SettingsViewModel.class);
+        //SettingsViewModel settingsViewModel =
+          //      new ViewModelProvider(this).get(SettingsViewModel.class);
 
         settingsManager = new SettingsManager(requireContext());
         connTest = new TestConnection();
@@ -58,12 +61,15 @@ public class SettingsFragment extends Fragment {
         Button btnSave = binding.btnSave;
         Button btnConTest = binding.btnConTest;
         Button btnPermission = binding.btnPermission;
+        Button btnDistanceTime = binding.btnTime;
+        Button btnDistanceMeter = binding.btnDistance;
 
         Switch swAutorun = binding.swAutoRun;
 
         TextInputEditText txtHostName = binding.txtHostName;
         TextInputEditText txtPort = binding.txtPort;
         TextInputEditText txtApiKey = binding.txtApiKey;
+        TextInputEditText txtMinimumDistance = binding.txtMinimumDistance;
 
         TextView tvAccurancay = binding.tvSettingsAccurancay;
 
@@ -76,6 +82,9 @@ public class SettingsFragment extends Fragment {
 
         Slider slideAccurancay = binding.sliderAccurancay;
 
+        LinearLayout layoutRadioGroup = binding.layoutDistanceMeter;
+        TextInputLayout textInputLayoutDistance = binding.textFieldMinimumDistance;
+
 
         // Read Settings
         txtHostName.setText(settingsManager.getDarwarichHost());
@@ -86,6 +95,7 @@ public class SettingsFragment extends Fragment {
         loadRadioGroup();
         loadSlider(slideAccurancay, tvAccurancay);
         enableDisableButtons();
+        loadUpdateMode();
         // Listener
 
         rgDistance.setOnCheckedChangeListener((group, checkedId) -> {
@@ -144,6 +154,14 @@ public class SettingsFragment extends Fragment {
         btnPermission.setOnClickListener(v -> {
             checkLocationPermission();
             checkNotificationPermission();
+        });
+
+        btnDistanceMeter.setOnClickListener(v -> {
+            selectUpdateMode(1);
+        });
+
+        btnDistanceTime.setOnClickListener(v -> {
+            selectUpdateMode(2);
         });
 
         swAutorun.setOnClickListener(v -> {
@@ -229,6 +247,29 @@ public class SettingsFragment extends Fragment {
             requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     LOCATION_PERMISSION_REQUEST_CODE);
         }
+    }
+
+    private void selectUpdateMode(int mode)
+    {
+        // MODE 1 = distance, MODE 2 = time
+        if(mode == 1)
+        {
+            settingsManager.setUpdateDistanceMode(String.valueOf(mode));
+            binding.layoutDistanceTime.setVisibility(View.GONE);
+            binding.layoutDistanceMeter.setVisibility(View.VISIBLE);
+        }else if(mode == 2)
+        {
+            settingsManager.setUpdateDistanceMode(String.valueOf(mode));
+            binding.layoutDistanceTime.setVisibility(View.VISIBLE);
+            binding.layoutDistanceMeter.setVisibility(View.GONE);
+        }
+    }
+
+    private void loadUpdateMode()
+    {
+        int mode = Integer.parseInt(settingsManager.getUpdateDistanceMode());
+
+        selectUpdateMode(mode);
     }
 
     private void checkNotificationPermission() {

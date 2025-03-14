@@ -14,6 +14,9 @@ public class SettingsManager {
     private static final String KEY_DARWARICH_PORT = "darwarich_port";
     private static final String KEY_DARWARICH_API = "darwarich_api";
     private static final String KEY_ACCURACY = "update_accuracy";
+    private static final String KEY_UPDATE_DISTANCE_MODE = "update_mode";
+    private static final String KEY_UPDATE_DISTANCE_TIME = "update_distance_time";
+    private static final String KEY_UPDATE_MINIMUM_DISTANCE = "update_minimum_distance";
 
     private SharedPreferences sharedPreferences;
 
@@ -103,10 +106,33 @@ public class SettingsManager {
     public void setUpdateAccuracy(String mode) {
         sharedPreferences.edit().putString(KEY_ACCURACY, mode).apply();
     }
-
     public String getUpdateAccuracy() {
         return sharedPreferences.getString(KEY_ACCURACY, "1");
     }
+
+    public String getUpdateDistanceMode() {
+        return sharedPreferences.getString(KEY_UPDATE_DISTANCE_MODE, "1");
+    }
+
+    public void setUpdateDistanceMode(String mode) {
+        sharedPreferences.edit().putString(KEY_UPDATE_DISTANCE_MODE, mode).apply();
+    }
+    public String getUpdateDistanceTime() {
+        return sharedPreferences.getString(KEY_UPDATE_DISTANCE_TIME, "60");
+    }
+
+    public void setUpdateDistanceTime(String updateDistanceTime) {
+        sharedPreferences.edit().putString(KEY_UPDATE_DISTANCE_TIME, updateDistanceTime).apply();
+    }
+
+    public String getMinimumDistance() {
+        return sharedPreferences.getString(KEY_UPDATE_MINIMUM_DISTANCE, "500");
+    }
+
+    public void setMinimumDistance(String minimumDistance) {
+        sharedPreferences.edit().putString(KEY_UPDATE_MINIMUM_DISTANCE, minimumDistance).apply();
+    }
+
 
     public void setLastKnownLocation(double latitude, double longitude) {
         sharedPreferences.edit()
