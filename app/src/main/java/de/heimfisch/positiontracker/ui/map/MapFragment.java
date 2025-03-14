@@ -1,68 +1,98 @@
 package de.heimfisch.positiontracker.ui.map;
 
+import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
-import org.osmdroid.util.BoundingBox;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
 
+import de.heimfisch.positiontracker.R;
 import de.heimfisch.positiontracker.databinding.FragmentMapBinding;
+import de.heimfisch.positiontracker.utils.GetLocation;
 
 public class MapFragment extends Fragment {
 
     private FragmentMapBinding binding;
     private MapView mapView;
+    private Marker userMarker;
+    private GetLocation getLocation;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        MapViewModel homeViewModel =
-                new ViewModelProvider(this).get(MapViewModel.class);
+        MapViewModel homeViewModel = new ViewModelProvider(this).get(MapViewModel.class);
 
         binding = FragmentMapBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         // OSM MapView initialisieren
         Configuration.getInstance().setUserAgentValue(requireContext().getPackageName());
-
         mapView = binding.mapView;
-        mapView.setTileSource(TileSourceFactory.MAPNIK); // Standard OpenStreetMap Kacheln
+        mapView.setTileSource(TileSourceFactory.MAPNIK);
         mapView.setMultiTouchControls(true);
-        mapView.setMinZoomLevel(4.0);
 
-        // Setze Standardposition auf Berlin
+        // Standardposition setzen (Berlin)
         GeoPoint startPoint = new GeoPoint(52.5200, 13.4050);
         mapView.getController().setZoom(10.0);
-
-        // Begrenzung nur für Höhe (Nord/Süd) setzen, aber Ost/West offen lassen
-        double maxLatitude = 85.0511;  // Maximale nördliche Breite (Oberhalb von Grönland)
-        double minLatitude = -85.0511; // Maximale südliche Breite (Antarktis)
-        double maxLongitude = 180.0;   // Keine Begrenzung für Osten
-        double minLongitude = -180.0;  // Keine Begrenzung für Westen
-
-        BoundingBox boundingBox = new BoundingBox(maxLatitude, maxLongitude, minLatitude, minLongitude);
-        mapView.setScrollableAreaLimitDouble(boundingBox); // Setzt die vertikale Begrenzung
-
         mapView.getController().setCenter(startPoint);
 
-        // Beispiel-Marker setzen
-        Marker marker = new Marker(mapView);
-        marker.setPosition(startPoint);
-        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-        marker.setTitle("Berlin");
-        mapView.getOverlays().add(marker);
+        // Google Maps Stil Marker setzen (eigene Grafik)
+        userMarker = new Marker(mapView);
+        Drawable gmapsMarker = getResources().getDrawable(R.drawable.location_marker);
+        userMarker.setIcon(gmapsMarker);
+        userMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+        userMarker.setPosition(startPoint);
+        userMarker.setTitle("Mein Standort");
+        mapView.getOverlays().add(userMarker);
+
+
+        // Standortermittlung
+        getLocation = new GetLocation(requireContext());
+
+        // Floating Action Button (FAB) für Standort
+        FloatingActionButton fab = binding.fabLocation;
+        fab.setOnClickListener(v -> getCurrentLocation());
 
         return root;
+    }
+
+    /**
+     * Ermittelt die aktuelle Position und aktualisiert die Karte + Marker
+     */
+    private void getCurrentLocation() {
+        getLocation.requestLocation(new GetLocation.LocationResultCallback() {
+            @Override
+            public void onLocationSuccess(Location location) {
+                GeoPoint newLocation = new GeoPoint(location.getLatitude(), location.getLongitude());
+
+                // Karte auf neue Position zentrieren
+                mapView.getController().animateTo(newLocation);
+                // mapView.getController().setZoom(15.0);
+
+                // Marker aktualisieren
+                userMarker.setPosition(newLocation);
+                userMarker.setTitle("Mein aktueller Standort");
+                mapView.invalidate(); // Karte aktualisieren
+            }
+
+            @Override
+            public void onLocationError(String error) {
+                // Falls kein Standort verfügbar ist
+                System.out.println("Fehler: " + error);
+            }
+        });
     }
 
     @Override
