@@ -179,27 +179,20 @@
                 </RadioGroup>
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/layoutDistance_Time"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textField5"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingTop="@dimen/padding"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                android:hint="@string/settings_minimum_distance_time"
+                android:paddingBottom="@dimen/padding">
 
-                <TextView
-                    android:id="@+id/tvTimeBetween"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txtDistanceTime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/settings_time_between" />
+                    android:inputType="number|numberSigned" />
 
-                <com.google.android.material.slider.Slider
-                    android:id="@+id/sliderTimeBetween"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:stepSize="1"
-                    android:valueFrom="1"
-                    android:valueTo="1800"/>
-            </LinearLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
 
 
