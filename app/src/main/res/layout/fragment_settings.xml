@@ -21,14 +21,14 @@
                 android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Serversettings"
+                android:text="@string/settings_serversettings"
                 android:paddingBottom="@dimen/padding"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Hostname with http(s)"
+                android:hint="@string/settings_hostname"
                 android:paddingBottom="@dimen/padding">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -42,7 +42,7 @@
                 android:id="@+id/textFieldPort"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Port"
+                android:hint="@string/settings_port"
                 android:paddingBottom="@dimen/padding">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -58,7 +58,7 @@
                 android:id="@+id/textFieldAPI"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="API KEY"
+                android:hint="@string/settings_api_key"
                 android:paddingBottom="@dimen/padding">
 
                 <com.google.android.material.textfield.TextInputEditText

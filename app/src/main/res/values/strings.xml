@@ -3,6 +3,7 @@
     <string name="title_home">MAP</string>
     <string name="title_dashboard">STATS</string>
     <string name="title_notifications">SETTINGS</string>
+    <!-- SETTINGS FRAGMENT -->
     <string name="settings_tracking_heading">Tracking Settings</string>
     <string name="settings_testcon">Test Connection</string>
     <string name="settings_save">Save</string>
@@ -18,6 +19,11 @@
     <string name="settings_distance_points">Distance between Points in m</string>
     <string name="settings_minimum_distance">Minimum Distance (meter) between Points for start</string>
     <string name="settings_minimum_distance_time">Seconds between Points</string>
+    <string name="settings_hostname">Hostname with http(s)</string>
+    <string name="settings_port">Port</string>
+    <string name="settings_api_key">API KEY</string>
+    <string name="settings_serversettings">Serversettings</string>
+    <!-- MAP FRAGMENT -->
     <string name="map_push_position">Push Current Position</string>
     <string name="map_push_position_all">Push Position</string>
 </resources>
