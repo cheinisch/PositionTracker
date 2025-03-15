@@ -28,7 +28,7 @@
                 android:id="@+id/textField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Hostname"
+                android:hint="Hostname with http(s)"
                 android:paddingBottom="@dimen/padding">
 
                 <com.google.android.material.textfield.TextInputEditText

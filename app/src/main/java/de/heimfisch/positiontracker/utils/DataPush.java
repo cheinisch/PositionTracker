@@ -147,7 +147,7 @@ public class DataPush {
      * Holt die API-URL aus den Einstellungen.
      */
     private String getServerUrl() {
-        return "http://" + settingsManager.getDarwarichHost() + ":" + settingsManager.getDarwarichPort() + "/api/v1/owntracks/points";
+        return settingsManager.getDarwarichHost() + ":" + settingsManager.getDarwarichPort() + "/api/v1/owntracks/points";
     }
 
     /**

@@ -20,7 +20,7 @@ public class TestConnection {
         executor.execute(() -> {
             boolean isSuccess = false;
             try {
-                String urlString = "http://" + hostname + ":" + port;
+                String urlString = hostname + ":" + port;
                 Log.d(TAG, "Teste Verbindung zu: " + urlString);
 
                 URL url = new URL(urlString);
