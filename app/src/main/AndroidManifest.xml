@@ -38,6 +38,11 @@
             </intent-filter>
         </activity>
 
+        <service
+            android:name=".services.BackgroundService"
+            android:foregroundServiceType="location"
+            android:exported="false"/>
+
         <meta-data
             android:name="org.osmdroid.config"
             android:value="de.heimfisch.positiontracker"/>

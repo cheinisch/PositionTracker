@@ -20,11 +20,12 @@
         android:id="@+id/fabLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:src="@android:drawable/ic_menu_mylocation"
         app:backgroundTint="@color/teal_700"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
+        app:layout_constraintBottom_toBottomOf="@+id/mapView"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- LinearLayout für andere UI-Elemente -->
     <LinearLayout
@@ -40,15 +41,26 @@
             android:layout_height="wrap_content"
             android:text="TextView" />
         <TextView
-            android:id="@+id/textView6"
+            android:id="@+id/tvPointsQueue"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="TextView" />
         <TextView
-            android:id="@+id/textView7"
+            android:id="@+id/tvTimeRemaining"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="TextView" />
+
+        <Button
+            android:id="@+id/btnPushPosition"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/map_push_position" />
+        <Button
+            android:id="@+id/btnPushPositionQueue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/map_push_position_all" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
