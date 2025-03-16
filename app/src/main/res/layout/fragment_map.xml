@@ -40,16 +40,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="TextView" />
+
         <TextView
             android:id="@+id/tvPointsQueue"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="@string/map_push_position_all" />
+
         <TextView
             android:id="@+id/tvTimeRemaining"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="@string/map_next_push" />
 
         <Button
             android:id="@+id/btnPushPosition"

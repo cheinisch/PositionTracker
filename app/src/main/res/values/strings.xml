@@ -26,4 +26,8 @@
     <!-- MAP FRAGMENT -->
     <string name="map_push_position">Push Current Position</string>
     <string name="map_push_position_all">Push Position</string>
+    <string name="map_position_send_success">Position was send</string>
+    <string name="map_position_cannot_locate">Cannot locate position</string>
+    <string name="map_next_push"></string>
+    <string name="map_queue_length"></string>
 </resources>

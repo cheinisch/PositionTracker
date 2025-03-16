@@ -88,7 +88,6 @@ public class MapFragment extends Fragment {
         userMarker.setIcon(gmapsMarker);
         userMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
         userMarker.setPosition(startPoint);
-        userMarker.setTitle("Mein Standort");
         mapView.getOverlays().add(userMarker);
 
         // Standortermittlung
@@ -155,7 +154,7 @@ public class MapFragment extends Fragment {
 
                 // Toast NUR beim erfolgreichen Senden der Position anzeigen
                 requireActivity().runOnUiThread(() ->
-                        Toast.makeText(requireContext(), "Standort gesendet!", Toast.LENGTH_SHORT).show());
+                        Toast.makeText(requireContext(), requireContext().getString(R.string.map_position_send_success) +"!", Toast.LENGTH_SHORT).show());
 
                 dataPush.sendLocation(location);
 
@@ -168,7 +167,7 @@ public class MapFragment extends Fragment {
                 Log.e("MapFragment", "Fehler beim Standort: " + error);
 
                 requireActivity().runOnUiThread(() ->
-                        Toast.makeText(requireContext(), "Standort konnte nicht erfasst werden!",
+                        Toast.makeText(requireContext(), requireContext().getString(R.string.map_position_cannot_locate) +"!",
                                 Toast.LENGTH_SHORT).show());
             }
         });
@@ -189,7 +188,6 @@ public class MapFragment extends Fragment {
 
                 // Marker aktualisieren
                 userMarker.setPosition(newLocation);
-                userMarker.setTitle("Mein aktueller Standort");
                 mapView.invalidate(); // Karte aktualisieren
 
 
