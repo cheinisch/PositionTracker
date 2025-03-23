@@ -1,14 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.about.AboutFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
 
-</FrameLayout>
+        <!-- App Name -->
+        <TextView
+            android:id="@+id/text_app_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="App Name"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textStyle="bold"
+            android:paddingBottom="8dp" />
+
+        <!-- Version -->
+        <TextView
+            android:id="@+id/text_app_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Version: 1.0.0"
+            android:paddingBottom="4dp" />
+
+        <!-- Build Code -->
+        <TextView
+            android:id="@+id/text_app_build"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Build Code: 100"
+            android:paddingBottom="16dp" />
+
+        <!-- Überschrift für Libraries -->
+        <TextView
+            android:id="@+id/text_libs_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Verwendete Libraries:"
+            android:textStyle="bold"
+            android:paddingBottom="8dp" />
+
+        <!-- Liste der verwendeten Libraries -->
+        <TextView
+            android:id="@+id/text_libraries"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="- AndroidX\n- Google Maps\n- Material Components\n- etc."
+            android:paddingBottom="8dp" />
+
+        <Button
+            android:id="@+id/button_licenses"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Open Source Lizenzen anzeigen" />
+
+    </LinearLayout>
+</ScrollView>

@@ -1,66 +1,62 @@
 package de.heimfisch.positiontracker.ui.about;
 
+import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import androidx.fragment.app.Fragment;
+
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
 
 import de.heimfisch.positiontracker.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link AboutFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class AboutFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public AboutFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment AboutFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static AboutFragment newInstance(String param1, String param2) {
-        AboutFragment fragment = new AboutFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+    public static AboutFragment newInstance() {
+        return new AboutFragment();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_about, container, false);
+        View view = inflater.inflate(R.layout.fragment_about, container, false);
+
+        // TextViews aus dem Layout referenzieren
+        TextView appNameText = view.findViewById(R.id.text_app_name);
+        TextView versionText = view.findViewById(R.id.text_app_version);
+        TextView buildText = view.findViewById(R.id.text_app_build);
+
+        try {
+            PackageManager pm = requireContext().getPackageManager();
+            PackageInfo info = pm.getPackageInfo(requireContext().getPackageName(), 0);
+
+            String appName = getString(R.string.app_name);
+            String version = info.versionName;
+            int buildCode = info.versionCode; // oder: info.getLongVersionCode() für API 28+
+
+            appNameText.setText(appName);
+            versionText.setText("Version: " + version);
+            buildText.setText("Build Code: " + buildCode);
+
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        view.findViewById(R.id.button_licenses).setOnClickListener(v -> {
+            Intent intent = new Intent(requireContext(), OssLicensesMenuActivity.class);
+            intent.putExtra("title", "Verwendete Open Source Libraries");
+            startActivity(intent);
+        });
+
+        return view;
     }
 }

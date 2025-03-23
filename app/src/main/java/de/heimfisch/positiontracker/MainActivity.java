@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -51,8 +52,34 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
+        navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
+            int destId = destination.getId();
+
+            // Prüfen, ob das Ziel zur BottomNavigation gehört
+            boolean isBottomNavDestination = destId == R.id.navigation_map
+                    || destId == R.id.navigation_stats
+                    || destId == R.id.navigation_settings;
+
+            // BottomNavigationView anzeigen oder verstecken
+            if (isBottomNavDestination) {
+                binding.navView.setVisibility(View.VISIBLE);
+            } else {
+                binding.navView.setVisibility(View.GONE);
+
+                // Optional: Auswahl zurücksetzen, wie vorher
+                binding.navView.getMenu().setGroupCheckable(0, true, false);
+                for (int i = 0; i < binding.navView.getMenu().size(); i++) {
+                    binding.navView.getMenu().getItem(i).setChecked(false);
+                }
+                binding.navView.getMenu().setGroupCheckable(0, true, true);
+            }
+        });
+
+
         // Hintergrunddienst regelmäßig prüfen
         handler.post(checkServiceRunnable);
+
+
     }
 
     /**
@@ -110,5 +137,19 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
+        return navController.navigateUp() || super.onSupportNavigateUp();
+    }
+
+    private void deselectBottomNav() {
+        binding.navView.getMenu().setGroupCheckable(0, true, false);
+        for (int i = 0; i < binding.navView.getMenu().size(); i++) {
+            binding.navView.getMenu().getItem(i).setChecked(false);
+        }
+        binding.navView.getMenu().setGroupCheckable(0, true, true);
     }
 }
