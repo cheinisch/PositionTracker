@@ -3,6 +3,7 @@
     <string name="title_home">MAP</string>
     <string name="title_dashboard">STATS</string>
     <string name="title_notifications">SETTINGS</string>
+    <string name="title_about">About</string>
     <!-- SETTINGS FRAGMENT -->
     <string name="settings_tracking_heading">Tracking Settings</string>
     <string name="settings_testcon">Test Connection</string>
@@ -30,4 +31,6 @@
     <string name="map_position_cannot_locate">Cannot locate position</string>
     <string name="map_next_push"></string>
     <string name="map_queue_length"></string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -90,4 +90,25 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         handler.removeCallbacks(checkServiceRunnable); // Stoppt die regelmäßige Überprüfung, wenn die App geschlossen wird
     }
+
+    @Override
+    public boolean onCreateOptionsMenu( Menu menu ) {
+
+        getMenuInflater().inflate(R.menu.top_nav_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.navigation_about) {
+            // z. B. Navigation zu den Einstellungen
+            Navigation.findNavController(this, R.id.nav_host_fragment_activity_main)
+                    .navigate(R.id.navigation_about);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 }
