@@ -8,10 +8,10 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Location;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
-import android.service.notification.StatusBarNotification;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -19,23 +19,19 @@ import androidx.core.app.NotificationCompat;
 
 import de.heimfisch.positiontracker.MainActivity;
 import de.heimfisch.positiontracker.R;
+import de.heimfisch.positiontracker.SettingsManager;
+import de.heimfisch.positiontracker.utils.DataPush;
+import de.heimfisch.positiontracker.utils.GetLocation;
 
 public class BackgroundService extends Service {
+
     private static final String TAG = "BackgroundService";
     private static final String CHANNEL_ID = "PositionTrackerChannel";
     private static final int NOTIFICATION_ID = 1;
-    private static final long CHECK_INTERVAL = 60000; // 1 Minute
-    private final Handler handler = new Handler();
 
-    private final Runnable checkSettingsRunnable = new Runnable() {
-        @Override
-        public void run() {
-            Log.d(TAG, "Prüfe Einstellungen für den Hintergrunddienst...");
-            checkSettingsAndStopIfNeeded();
-            restoreNotification();
-            handler.postDelayed(this, CHECK_INTERVAL);
-        }
-    };
+    private final Handler handler = new Handler();
+    private Location lastLocation = null;
+    private DataPush dataPush;
 
     @Override
     public void onCreate() {
@@ -44,7 +40,8 @@ public class BackgroundService extends Service {
         createNotificationChannel();
         startForeground(NOTIFICATION_ID, getNotification());
 
-        handler.postDelayed(checkSettingsRunnable, CHECK_INTERVAL);
+        dataPush = new DataPush(getApplicationContext());
+        handler.post(movementCheckRunnable); // Starte mit Bewegungserkennung
     }
 
     @Override
@@ -57,7 +54,8 @@ public class BackgroundService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        handler.removeCallbacks(checkSettingsRunnable);
+        handler.removeCallbacks(movementCheckRunnable);
+        handler.removeCallbacks(sendPositionRunnable);
         Log.d(TAG, "Hintergrunddienst gestoppt.");
     }
 
@@ -67,9 +65,129 @@ public class BackgroundService extends Service {
         return null;
     }
 
-    /**
-     * Erstellt einen Notification-Kanal (ab Android 8.0 erforderlich).
-     */
+    // Phase 1: Alle 60s Bewegung prüfen
+    private final Runnable movementCheckRunnable = new Runnable() {
+        @Override
+        public void run() {
+            checkSettingsAndStopIfNeeded();
+            restoreNotification();
+
+            Log.d(TAG, "Bewegungserkennung läuft...");
+            GetLocation locationProvider = new GetLocation(getApplicationContext());
+            locationProvider.requestLocation(new GetLocation.LocationResultCallback() {
+                @Override
+                public void onLocationSuccess(Location location) {
+                    if (checkDistance(location)) {
+                        Log.d(TAG, "Bewegung erkannt – starte Positionsübertragung.");
+                        handler.removeCallbacks(movementCheckRunnable);
+                        handler.post(sendPositionRunnable);
+                    }
+                    locationProvider.stopLocationUpdates();
+                }
+
+                @Override
+                public void onLocationError(String error) {
+                    Log.e(TAG, "Fehler bei Bewegungserkennung: " + error);
+                    locationProvider.stopLocationUpdates();
+                }
+            });
+
+            handler.postDelayed(this, 60 * 1000L);
+        }
+    };
+
+    // Phase 2: Regelmäßig Position senden
+    private final Runnable sendPositionRunnable = new Runnable() {
+        @Override
+        public void run() {
+            checkSettingsAndStopIfNeeded();
+            restoreNotification();
+
+            Log.d(TAG, "Sende aktuelle Position...");
+            GetLocation locationProvider = new GetLocation(getApplicationContext());
+            locationProvider.requestLocation(new GetLocation.LocationResultCallback() {
+                @Override
+                public void onLocationSuccess(Location location) {
+                    sendCurrentPosition(location);
+                    locationProvider.stopLocationUpdates();
+                }
+
+                @Override
+                public void onLocationError(String error) {
+                    Log.e(TAG, "Fehler beim Senden der Position: " + error);
+                    locationProvider.stopLocationUpdates();
+                }
+            });
+
+            long interval = getIntervalSettingInSeconds() * 1000L;
+            handler.postDelayed(this, interval);
+        }
+    };
+
+    private boolean checkDistance(Location currentLocation) {
+        int movementThreshold = 60;
+
+        try {
+            SettingsManager settingsManager = new SettingsManager(getApplicationContext());
+            String minDistanceStr = settingsManager.getMinimumDistance();
+            if (minDistanceStr != null && !minDistanceStr.trim().isEmpty()) {
+                movementThreshold = Integer.parseInt(minDistanceStr);
+            }
+        } catch (NumberFormatException e) {
+            Log.w(TAG, "Ungültige Mindestbewegung – fallback auf 60m");
+        }
+
+        if (lastLocation == null) {
+            lastLocation = currentLocation;
+            Log.d(TAG, "Kein vorheriger Standort – speichere ersten Punkt.");
+            return false;
+        }
+
+        float distance = currentLocation.distanceTo(lastLocation);
+        Log.d(TAG, "Distanz zur letzten Position: " + distance + " Meter");
+
+        if (distance >= movementThreshold) {
+            Log.d(TAG, "Bewegung erkannt (" + distance + " m > " + movementThreshold + " m)");
+            lastLocation = currentLocation;
+            return true;
+        }
+
+        Log.d(TAG, "Noch nicht genug bewegt – keine Übertragung.");
+        return false;
+    }
+
+    private void sendCurrentPosition(Location location) {
+        Log.d(TAG, "Sende aktuelle Position: " + location.getLatitude() + ", " + location.getLongitude());
+        dataPush.sendLocation(location);
+        lastLocation = location;
+    }
+
+    private long getIntervalSettingInSeconds() {
+        long interval = 60; // default
+
+        try {
+            SettingsManager settingsManager = new SettingsManager(getApplicationContext());
+            String intervalStr = settingsManager.getUpdateDistanceTime();
+            if (intervalStr != null && !intervalStr.trim().isEmpty()) {
+                interval = Long.parseLong(intervalStr);
+            }
+        } catch (NumberFormatException e) {
+            Log.w(TAG, "Ungültiges Intervall – fallback auf 60s");
+        }
+
+        return interval;
+    }
+
+    private void checkSettingsAndStopIfNeeded() {
+        SharedPreferences prefs = getSharedPreferences("settings", MODE_PRIVATE);
+        boolean isTrackingEnabled = prefs.getBoolean("background_service_enabled", true);
+
+        if (!isTrackingEnabled) {
+            Log.d(TAG, "Tracking deaktiviert. Stoppe Hintergrunddienst.");
+            stopSelf();
+        }
+    }
+
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel serviceChannel = new NotificationChannel(
@@ -79,7 +197,6 @@ public class BackgroundService extends Service {
             );
             serviceChannel.setLockscreenVisibility(NotificationCompat.VISIBILITY_PUBLIC);
             serviceChannel.setDescription("Dieser Dienst läuft dauerhaft im Hintergrund.");
-
             NotificationManager manager = getSystemService(NotificationManager.class);
             if (manager != null) {
                 manager.createNotificationChannel(serviceChannel);
@@ -87,66 +204,39 @@ public class BackgroundService extends Service {
         }
     }
 
-    /**
-     * Erstellt die permanente "Sticky" Notification.
-     */
     private Notification getNotification() {
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(
-                this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+                this, 0, notificationIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
         );
 
         return new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle("PositionTracker läuft")
-                .setContentText("Der Hintergrunddienst ist aktiv und kann nicht entfernt werden.")
-                .setSmallIcon(R.drawable.ic_notify_icon) // Ersetze mit deinem Icon
+                .setContentText("Der Hintergrunddienst ist aktiv und prüft deine Position.")
+                .setSmallIcon(R.drawable.ic_notify_icon)
                 .setContentIntent(pendingIntent)
                 .setOngoing(true)
-                .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setCategory(NotificationCompat.CATEGORY_SERVICE)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .build();
     }
 
-    /**
-     * Stellt sicher, dass die Notification weiterhin aktiv ist.
-     */
     private void restoreNotification() {
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        if (notificationManager != null) {
-            boolean isNotificationActive = isNotificationVisible(notificationManager);
-            if (!isNotificationActive) {
-                Log.d(TAG, "Notification wurde gelöscht – Wiederherstellung.");
-                startForeground(NOTIFICATION_ID, getNotification());
-            }
-        }
-    }
-
-    /**
-     * Prüft, ob die Notification aktiv ist.
-     */
-    private boolean isNotificationVisible(NotificationManager notificationManager) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            for (StatusBarNotification sbn : notificationManager.getActiveNotifications()) {
+        if (notificationManager != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            boolean isVisible = false;
+            for (android.service.notification.StatusBarNotification sbn : notificationManager.getActiveNotifications()) {
                 if (sbn.getNotification().getChannelId().equals(CHANNEL_ID)) {
-                    return true;
+                    isVisible = true;
+                    break;
                 }
             }
-        }
-        return false;
-    }
-
-    /**
-     * Prüft die Einstellungen und stoppt den Service, falls er deaktiviert wurde.
-     */
-    private void checkSettingsAndStopIfNeeded() {
-        SharedPreferences prefs = getSharedPreferences("settings", MODE_PRIVATE);
-        boolean isTrackingEnabled = prefs.getBoolean("background_service_enabled", true);
-
-        if (!isTrackingEnabled) {
-            Log.d(TAG, "Hintergrunddienst wurde deaktiviert. Stoppe den Service...");
-            stopSelf();
+            if (!isVisible) {
+                Log.d(TAG, "Notification war nicht sichtbar – wird wiederhergestellt.");
+                startForeground(NOTIFICATION_ID, getNotification());
+            }
         }
     }
 }
