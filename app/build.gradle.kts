@@ -10,8 +10,8 @@ android {
         applicationId = "de.heimfisch.positiontracker"
         minSdk = 29
         targetSdk = 35
-        versionCode = 9
-        versionName = "0.0.3.4"
+        versionCode = 10
+        versionName = "0.0.3.5"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

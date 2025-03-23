@@ -35,7 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Build Code: 100"
-            android:paddingBottom="16dp" />
+            android:paddingBottom="4dp" />
 
         <!-- Github REPO -->
         <TextView
@@ -43,7 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/link_color"
-            android:paddingTop="24dp" />
+            android:paddingTop="@dimen/padding" />
 
         <!-- Überschrift für Libraries -->
         <TextView
@@ -59,8 +59,7 @@
             android:id="@+id/text_libraries"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text=""
-            android:paddingTop="16dp"/>
+            android:text=""/>
 
         <Button
             android:id="@+id/button_licenses"
