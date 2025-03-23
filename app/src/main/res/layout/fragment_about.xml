@@ -43,7 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/link_color"
-            android:paddingTop="@dimen/padding" />
+            android:paddingBottom="@dimen/padding" />
 
         <!-- Überschrift für Libraries -->
         <TextView
