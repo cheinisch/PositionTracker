@@ -47,6 +47,8 @@ public class SettingsFragment extends Fragment {
 
     private String TAG = "SettingsFragment";
 
+    private boolean enableUpdateIntervall = false;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         //SettingsViewModel settingsViewModel =
@@ -290,6 +292,12 @@ public class SettingsFragment extends Fragment {
 
     private void selectUpdateMode(int mode)
     {
+        if(!enableUpdateIntervall)
+        {
+            mode = 2;
+            binding.btnTime.setVisibility(View.GONE);
+            binding.btnDistance.setVisibility(View.GONE);
+        }
         // MODE 1 = distance, MODE 2 = time
         if(mode == 1)
         {
