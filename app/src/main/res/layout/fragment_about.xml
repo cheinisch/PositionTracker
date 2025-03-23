@@ -37,6 +37,14 @@
             android:text="Build Code: 100"
             android:paddingBottom="16dp" />
 
+        <!-- Github REPO -->
+        <TextView
+            android:id="@+id/text_link"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/link_color"
+            android:paddingTop="24dp" />
+
         <!-- Überschrift für Libraries -->
         <TextView
             android:id="@+id/text_libs_title"
@@ -51,8 +59,8 @@
             android:id="@+id/text_libraries"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="- AndroidX\n- Google Maps\n- Material Components\n- etc."
-            android:paddingBottom="8dp" />
+            android:text=""
+            android:paddingTop="16dp"/>
 
         <Button
             android:id="@+id/button_licenses"

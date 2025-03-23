@@ -33,4 +33,17 @@
     <string name="map_queue_length"></string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- ABout Fragment-->
+    <string name="about_project_link_text">View Project on GitHub</string>
+    <string name="about_project_url">https://github.com/cheinisch/PositionTracker</string>
+
+    <string name="licences_oss">Used Open Source Libraries</string>
+    <string-array name="used_libraries">
+        <item>AndroidX Core</item>
+        <item>Material Components</item>
+        <item>Open Street Maps</item>
+        <item>Navigation Component</item>
+        <item>Play Services Location</item>
+    </string-array>
 </resources>

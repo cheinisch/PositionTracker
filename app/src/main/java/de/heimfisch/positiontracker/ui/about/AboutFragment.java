@@ -3,6 +3,8 @@ package de.heimfisch.positiontracker.ui.about;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,10 +55,34 @@ public class AboutFragment extends Fragment {
 
         view.findViewById(R.id.button_licenses).setOnClickListener(v -> {
             Intent intent = new Intent(requireContext(), OssLicensesMenuActivity.class);
-            intent.putExtra("title", "Verwendete Open Source Libraries");
+            intent.putExtra("title", getResources().getString(R.string.licences_oss));
             startActivity(intent);
+        });
+
+        TextView libsText = view.findViewById(R.id.text_libraries);
+
+        // Array aus resources laden
+        String[] libs = getResources().getStringArray(R.array.used_libraries);
+
+        // Zusammenbauen als Bullet-Liste
+        StringBuilder sb = new StringBuilder();
+        for (String lib : libs) {
+            sb.append("• ").append(lib).append("\n");
+        }
+
+        libsText.setText(sb.toString());
+
+        TextView linkText = view.findViewById(R.id.text_link);
+        linkText.setText(getString(R.string.about_project_link_text));
+        linkText.setPaintFlags(linkText.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        linkText.setOnClickListener(v -> {
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse(getString(R.string.about_project_url)));
+            startActivity(browserIntent);
         });
 
         return view;
     }
+
+
 }
