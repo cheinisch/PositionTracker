@@ -4,6 +4,7 @@
     <string name="title_dashboard">STATS</string>
     <string name="title_notifications">SETTINGS</string>
     <string name="title_about">About</string>
+    <string name="title_permission">Permission</string>
     <!-- SETTINGS FRAGMENT -->
     <string name="settings_tracking_heading">Tracking Settings</string>
     <string name="settings_testcon">Test Connection</string>

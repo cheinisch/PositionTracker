@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/permission_fragment_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="24dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/notification_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Benachrichtigungen: Unbekannt"
+        android:textSize="18sp"
+        android:paddingBottom="16dp"/>
+
+    <TextView
+        android:id="@+id/gps_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="GPS-Position: Unbekannt"
+        android:textSize="18sp"
+        android:paddingBottom="16dp"/>
+
+    <TextView
+        android:id="@+id/background_location_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="GPS im Hintergrund: Unbekannt"
+        android:textSize="18sp"
+        android:paddingBottom="16dp"/>
+</LinearLayout>

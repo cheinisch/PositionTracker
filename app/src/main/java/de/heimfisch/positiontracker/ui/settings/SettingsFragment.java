@@ -35,6 +35,7 @@ import de.heimfisch.positiontracker.R;
 import de.heimfisch.positiontracker.SettingsManager;
 import de.heimfisch.positiontracker.TestConnection;
 import de.heimfisch.positiontracker.databinding.FragmentSettingsBinding;
+import de.heimfisch.positiontracker.ui.permission.PermissionFragment;
 
 public class SettingsFragment extends Fragment {
 
@@ -159,8 +160,15 @@ public class SettingsFragment extends Fragment {
         });
 
         btnPermission.setOnClickListener(v -> {
-            checkLocationPermission();
-            checkNotificationPermission();
+            /*checkLocationPermission();
+            checkNotificationPermission();*/
+            PermissionFragment fragment = PermissionFragment.newInstance(null, null);
+
+            requireActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, fragment) // ID deines FragmentContainers im Layout
+                    .addToBackStack(null)
+                    .commit();
         });
 
         btnDistanceMeter.setOnClickListener(v -> {
