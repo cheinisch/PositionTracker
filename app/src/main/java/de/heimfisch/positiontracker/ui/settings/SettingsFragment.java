@@ -23,6 +23,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import com.google.android.material.slider.LabelFormatter;
 import com.google.android.material.slider.Slider;
@@ -162,13 +163,8 @@ public class SettingsFragment extends Fragment {
         btnPermission.setOnClickListener(v -> {
             /*checkLocationPermission();
             checkNotificationPermission();*/
-            PermissionFragment fragment = PermissionFragment.newInstance(null, null);
 
-            requireActivity().getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, fragment) // ID deines FragmentContainers im Layout
-                    .addToBackStack(null)
-                    .commit();
+            Navigation.findNavController(v).navigate(R.id.action_open_permissionFragment);
         });
 
         btnDistanceMeter.setOnClickListener(v -> {
