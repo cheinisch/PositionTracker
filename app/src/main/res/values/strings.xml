@@ -30,8 +30,8 @@
     <string name="map_position_send_success">Position was send</string>
     <string name="map_position_cannot_locate">Cannot locate position</string>
     <string name="map_push_info">Data Information</string>
-    <string name="map_next_push"></string>
-    <string name="map_queue_length"></string>
+    <string name="map_next_push">Next push in</string>
+    <string name="map_queue_length">Waitung queue lenght</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 

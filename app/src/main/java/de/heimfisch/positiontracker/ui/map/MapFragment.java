@@ -1,8 +1,13 @@
 package de.heimfisch.positiontracker.ui.map;
 
+import static androidx.core.content.ContextCompat.getSystemService;
+
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -14,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -35,6 +41,8 @@ public class MapFragment extends Fragment {
 
     private static final String TAG = "MapFragment";
     private static final long SEND_COOLDOWN = 20000; // 20 Sekunden Cooldown
+
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1001;
 
     private FragmentMapBinding binding;
     private MapView mapView;
@@ -77,8 +85,21 @@ public class MapFragment extends Fragment {
         mapView.setTileSource(TileSourceFactory.MAPNIK);
         mapView.setMultiTouchControls(true);
 
-        // Startposition (Berlin)
-        GeoPoint startPoint = new GeoPoint(52.5200, 13.4050);
+        GeoPoint startPoint = null;
+        if(checkLocationPermission())
+        {
+            LocationManager locationManager = (LocationManager) requireContext().getSystemService(Context.LOCATION_SERVICE);
+            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if (location != null) {
+                startPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
+            } else {
+                // fallback falls keine Position verfügbar ist
+                startPoint = new GeoPoint(52.5200, 13.4050); // Berlin
+            }
+        }else {
+            // Startposition (Berlin)
+            startPoint = new GeoPoint(52.5200, 13.4050);
+        }
         mapView.getController().setZoom(10.0);
         mapView.getController().setCenter(startPoint);
 
@@ -160,14 +181,14 @@ public class MapFragment extends Fragment {
     private void updateQueueStatus() {
         if (dataPush != null && tvPointsQueue != null) {
             int count = dataPush.getPendingPointCount();
-            tvPointsQueue.setText("Warteschlange: " + count + " Punkt(e)");
+            tvPointsQueue.setText(getResources().getString(R.string.map_queue_length) + ": " + count);
         }
     }
 
     private void updateTimeRemaining() {
         if (pushStatusManager != null && tvTimeRemaining != null) {
             long seconds = pushStatusManager.getRemainingSeconds();
-            tvTimeRemaining.setText("Nächster Push in: " + seconds + "s");
+            tvTimeRemaining.setText(getResources().getString(R.string.map_next_push) + ": " + seconds + "s");
         }
     }
 
@@ -176,6 +197,11 @@ public class MapFragment extends Fragment {
             requireActivity().runOnUiThread(() ->
                     Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show());
         }
+    }
+
+    private boolean checkLocationPermission() {
+        return ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED;
     }
 
     @Override
