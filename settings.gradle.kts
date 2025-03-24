@@ -20,5 +20,5 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "PositionTracker"
-include(":app")
-include(":positiontracker")
+include(":app", "wear")
+include(":wear:positiontrackerphone")
