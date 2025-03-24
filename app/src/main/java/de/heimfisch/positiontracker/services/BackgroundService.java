@@ -22,6 +22,7 @@ import de.heimfisch.positiontracker.R;
 import de.heimfisch.positiontracker.SettingsManager;
 import de.heimfisch.positiontracker.utils.DataPush;
 import de.heimfisch.positiontracker.utils.GetLocation;
+import de.heimfisch.positiontracker.utils.PushStatusManager;
 
 public class BackgroundService extends Service {
 
@@ -32,6 +33,7 @@ public class BackgroundService extends Service {
     private final Handler handler = new Handler();
     private Location lastLocation = null;
     private DataPush dataPush;
+    private PushStatusManager pushStatusManager;
 
     @Override
     public void onCreate() {
@@ -41,6 +43,8 @@ public class BackgroundService extends Service {
         startForeground(NOTIFICATION_ID, getNotification());
 
         dataPush = new DataPush(getApplicationContext());
+        pushStatusManager = new PushStatusManager(getApplicationContext());
+
         handler.post(movementCheckRunnable); // Starte mit Bewegungserkennung
     }
 
@@ -120,6 +124,8 @@ public class BackgroundService extends Service {
             });
 
             long interval = getIntervalSettingInSeconds() * 1000L;
+            long nextPushTime = System.currentTimeMillis() + interval;
+            pushStatusManager.setNextPushTime(nextPushTime);
             handler.postDelayed(this, interval);
         }
     };
@@ -163,7 +169,7 @@ public class BackgroundService extends Service {
     }
 
     private long getIntervalSettingInSeconds() {
-        long interval = 60; // default
+        long interval = 60; // fallback
 
         try {
             SettingsManager settingsManager = new SettingsManager(getApplicationContext());

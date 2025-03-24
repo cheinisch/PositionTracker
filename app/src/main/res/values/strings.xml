@@ -29,6 +29,7 @@
     <string name="map_push_position_all">Push Position</string>
     <string name="map_position_send_success">Position was send</string>
     <string name="map_position_cannot_locate">Cannot locate position</string>
+    <string name="map_push_info">Data Information</string>
     <string name="map_next_push"></string>
     <string name="map_queue_length"></string>
     <!-- TODO: Remove or change this placeholder text -->
@@ -39,6 +40,7 @@
     <string name="about_project_url">https://github.com/cheinisch/PositionTracker</string>
 
     <string name="licences_oss">Used Open Source Libraries</string>
+    <string name="about_libs">Used Libraries</string>
     <string-array name="used_libraries">
         <item>AndroidX Core</item>
         <item>Material Components</item>

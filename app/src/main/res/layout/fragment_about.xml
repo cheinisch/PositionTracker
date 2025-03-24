@@ -42,17 +42,18 @@
             android:id="@+id/text_link"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/link_color"
-            android:paddingBottom="@dimen/padding" />
+            android:paddingBottom="@dimen/padding"
+            android:text="Project URL"
+            android:textColor="@color/link_color" />
 
         <!-- Überschrift für Libraries -->
         <TextView
             android:id="@+id/text_libs_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Verwendete Libraries:"
-            android:textStyle="bold"
-            android:paddingBottom="8dp" />
+            android:paddingBottom="8dp"
+            android:text="@string/about_libs"
+            android:textStyle="bold" />
 
         <!-- Liste der verwendeten Libraries -->
         <TextView
@@ -65,7 +66,7 @@
             android:id="@+id/button_licenses"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Open Source Lizenzen anzeigen" />
+            android:text="@string/licences_oss" />
 
     </LinearLayout>
 </ScrollView>

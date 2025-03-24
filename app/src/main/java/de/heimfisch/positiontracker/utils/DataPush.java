@@ -172,4 +172,8 @@ public class DataPush {
         BatteryManager batteryManager = (BatteryManager) context.getSystemService(Context.BATTERY_SERVICE);
         return batteryManager != null && batteryManager.isCharging();
     }
+
+    public int getPendingPointCount() {
+        return locationQueue.size();
+    }
 }
