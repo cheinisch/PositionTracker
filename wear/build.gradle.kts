@@ -34,4 +34,6 @@ android {
 dependencies {
 
     implementation(libs.play.services.wearable)
+    implementation("androidx.wear:wear:1.3.0") // für WearableActivity
+    implementation ("org.osmdroid:osmdroid-android:6.1.16")
 }
