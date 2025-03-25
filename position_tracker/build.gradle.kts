@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace = "de.heimfisch.positiontrackerphone"
+    namespace = "de.heimfisch.position_tracker"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "de.heimfisch.positiontrackerphone"
+        applicationId = "de.heimfisch.position_tracker"
         minSdk = 30
         targetSdk = 35
         versionCode = 1
