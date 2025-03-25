@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "PositionTracker"
 include(":app")
-include(":wear:position_tracker")
+include(":wear")

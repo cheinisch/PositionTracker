@@ -3,16 +3,17 @@ plugins {
 }
 
 android {
-    namespace = "de.heimfisch.position_tracker"
+    namespace = "de.heimfisch.positiontracker"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "de.heimfisch.position_tracker"
+        applicationId = "de.heimfisch.positiontracker"
         minSdk = 30
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
+        wearAppUnbundled = true
     }
 
     buildTypes {

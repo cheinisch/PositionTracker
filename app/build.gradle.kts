@@ -32,6 +32,12 @@ android {
     buildFeatures {
         viewBinding = true
     }
+
+    bundle {
+        storeArchive {
+            enable = true
+        }
+    }
 }
 
 dependencies {
