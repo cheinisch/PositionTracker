@@ -1,5 +1,6 @@
 plugins {
-    alias(libs.plugins.android.application)
+    //alias(libs.plugins.android.application)
+    id("com.android.application")
 }
 
 android {
@@ -10,7 +11,7 @@ android {
         applicationId = "de.heimfisch.positiontracker"
         minSdk = 30
         targetSdk = 35
-        versionCode = 1
+        versionCode = 2
         versionName = "1.0"
 
         wearAppUnbundled = true
@@ -35,5 +36,5 @@ dependencies {
 
     implementation(libs.play.services.wearable)
     implementation("androidx.wear:wear:1.3.0") // für WearableActivity
-    implementation ("org.osmdroid:osmdroid-android:6.1.16")
+    implementation("org.osmdroid:osmdroid-android:6.1.16")
 }
