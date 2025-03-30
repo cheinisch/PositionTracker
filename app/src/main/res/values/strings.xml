@@ -49,4 +49,5 @@
         <item>Navigation Component</item>
         <item>Play Services Location</item>
     </string-array>
+    <string name="title_wearmodul">PositionTracker</string>
 </resources>

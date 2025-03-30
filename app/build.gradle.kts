@@ -33,12 +33,14 @@ android {
     buildFeatures {
         viewBinding = true
     }
+    dynamicFeatures += setOf(":wearmodul")
 
     bundle {
         storeArchive {
             enable = true
         }
     }
+
 
     //dynamicFeatures = [":wear"] // Dynamische Feature Abhängigkeit
 }

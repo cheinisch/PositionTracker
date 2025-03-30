@@ -22,3 +22,5 @@ dependencyResolutionManagement {
 rootProject.name = "PositionTracker"
 include(":app")
 include(":wear")
+project(":wear").projectDir = file("wear")
+include(":wearmodul")
