@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+
 }
 
 android {
@@ -38,6 +39,8 @@ android {
             enable = true
         }
     }
+
+    //dynamicFeatures = [":wear"] // Dynamische Feature Abhängigkeit
 }
 
 dependencies {
@@ -51,13 +54,15 @@ dependencies {
     implementation(libs.navigation.ui)
 
     implementation("androidx.preference:preference-ktx:1.2.1")
-    implementation ("com.google.android.gms:play-services-location:21.0.1")
+    implementation ("com.google.android.gms:play-services-location:21.3.0")
     implementation(libs.play.services.maps)
 
-    implementation ("org.osmdroid:osmdroid-android:6.1.16")
+    implementation ("org.osmdroid:osmdroid-android:6.1.20")
     implementation(libs.play.services.oss.licenses) // OSM
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
+    implementation(project(":wear")) // Abhängigkeit zum Wear OS Model
 }

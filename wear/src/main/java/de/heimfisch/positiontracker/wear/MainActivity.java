@@ -1,4 +1,4 @@
-package de.heimfisch.positiontracker;
+package de.heimfisch.positiontracker.wear;
 
 import android.app.Activity;
 import android.os.Bundle;
